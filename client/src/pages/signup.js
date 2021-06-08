@@ -4,7 +4,7 @@ import FirebaseContext from "../context/firebase";
 import * as ROUTES from "../constants/routes";
 import { doesUsernameExist } from "../services/firebase";
 
-const Signup = () => {
+const SignUp = () => {
   const history = useHistory();
   const { firebase } = useContext(FirebaseContext);
   const [username, setUsername] = useState("");
@@ -26,7 +26,7 @@ const Signup = () => {
     event.preventDefault();
 
     const usernameExists = await doesUsernameExist(username);
-      if (!usernameExists.length) {
+    if (!usernameExists.length) {
       try {
         const createdUserResult = await firebase
           .auth()
@@ -34,25 +34,27 @@ const Signup = () => {
         await createdUserResult.user.updateProfile({
           displayName: username,
         });
-          await firebase.firestore().collection("users").add({
-              userId: createdUserResult.user.uid,
-              username: username.toLowerCase(),
-              fullName,
-              emailAddress: emailAddress.toLowerCase(),
-              following: [],
-              dateCreated: Date.now()
-          });
+        await firebase.firestore().collection("users").add({
+          userId: createdUserResult.user.uid,
+          username: username.toLowerCase(),
+          fullName,
+          emailAddress: emailAddress.toLowerCase(),
+          following: [],
+          dateCreated: Date.now(),
+        });
 
-          history.push(ROUTES.DASHBOARD);
+        history.push(ROUTES.DASHBOARD);
       } catch (error) {
-          setFullName(" ");
-          setEmailAddress("");
-          setUsername("");
-          setPassword("");
-          setError(error.message)
+        setFullName(" ");
+        setEmailAddress("");
+        setUsername("");
+        setPassword("");
+        setError(error.message);
       }
     } else {
-        setError("Username already exists, please either login or choose a different username")
+      setError(
+        "Username already exists, please either login or choose a different username"
+      );
     }
   };
   return (
@@ -131,4 +133,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignUp;
