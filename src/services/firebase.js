@@ -131,7 +131,7 @@ export async function getUserPhotosByUserId(userId) {
 }
 
 export async function toggleFollow(
-  isFollowingPorfile,
+  isFollowingProfile,
   activeUserDocId,
   profileDocId,
   profileUserId,
@@ -140,12 +140,12 @@ export async function toggleFollow(
   await updateFollowedUserFollowers(
     profileDocId,
     followingUserId,
-    isFollowingPorfile
+    isFollowingProfile
   );
   await updateLoggedInUserFollowing(
     activeUserDocId,
     profileUserId,
-    isFollowingPorfile
+    isFollowingProfile
   );
 }
 
