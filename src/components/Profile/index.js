@@ -27,7 +27,7 @@ export default function Profile({ user }) {
       });
     }
     getProfileInfoAndPhotos();
-  }, []);
+  }, [user]);
 
   return (
     <>
