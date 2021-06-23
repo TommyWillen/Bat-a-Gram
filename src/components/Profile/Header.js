@@ -57,7 +57,7 @@ const Header = ({
         {profileUsername ? (
           <img
             className="rounded-full h-40 w-40 flex"
-            alt={`${fullName}'s profile picture`}
+            alt={`${fullName}'s profile`}
             src={`/images/avatars/${profileUsername}.jpg`}
             onError={(event) => {
               event.target.src = DEFAULT_IMAGE_PATH;

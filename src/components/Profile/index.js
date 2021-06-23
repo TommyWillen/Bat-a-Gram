@@ -1,14 +1,14 @@
 import { useReducer, useEffect } from "react";
 import PropTypes from "prop-types";
-import Header from "./Header";
-import Photos from "./Photos";
+import Header from "./header";
+import Photos from "./photos";
 import { getUserPhotosByUserId } from "../../services/firebase";
 
-const Profile = ({ user }) => {
+export default function Profile({ user }) {
   const reducer = (state, newState) => ({ ...state, ...newState });
   const initialState = {
     profile: {},
-    photosCollection: [],
+    photosCollection: null,
     followerCount: 0,
   };
 
@@ -18,14 +18,14 @@ const Profile = ({ user }) => {
   );
 
   useEffect(() => {
-    const getProfileInfoAndPhotos = async () => {
+    async function getProfileInfoAndPhotos() {
       const photos = await getUserPhotosByUserId(user.userId);
       dispatch({
         profile: user,
         photosCollection: photos,
         followerCount: user.followers.length,
       });
-    };
+    }
     getProfileInfoAndPhotos();
   }, [user.username]);
 
@@ -40,18 +40,16 @@ const Profile = ({ user }) => {
       <Photos photos={photosCollection} />
     </>
   );
-};
-
-export default Profile;
+}
 
 Profile.propTypes = {
-    user: PropTypes.shape({
-      dateCreated: PropTypes.number,
-      emailAddress: PropTypes.string,
-      followers: PropTypes.array,
-      following: PropTypes.array,
-      fullName: PropTypes.string,
-      userId: PropTypes.string,
-      username: PropTypes.string
-    })
-  };
+  user: PropTypes.shape({
+    dateCreated: PropTypes.number,
+    emailAddress: PropTypes.string,
+    followers: PropTypes.array,
+    following: PropTypes.array,
+    fullName: PropTypes.string,
+    userId: PropTypes.string,
+    username: PropTypes.string,
+  }),
+};

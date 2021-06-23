@@ -1,24 +1,30 @@
 import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import {
+  updateLoggedInUserFollowing,
+  updateFollowedUserFollowers,
+  getUserByUserId,
+} from "../../services/firebase";
 import LoggedInUserContext from "../../context/logged-in-user";
-import {updateLoggedInUserFollowing, updateFollowedUserFollowers, getUserByUserId} from "../../services/firebase"
 
-const SuggestedProfile = ({
+export default function SuggestedProfile({
   profileDocId,
   username,
   profileId,
   userId,
   loggedInUserDocId,
-}) => {
+}) {
   const [followed, setFollowed] = useState(false);
-  
-    const handleFollowUser = async () => {
+  const { setActiveUser } = useContext(LoggedInUserContext);
+
+  async function handleFollowUser() {
     setFollowed(true);
     await updateLoggedInUserFollowing(loggedInUserDocId, profileId, false);
     await updateFollowedUserFollowers(profileDocId, userId, false);
     const [user] = await getUserByUserId(userId);
-  };
+    setActiveUser(user);
+  }
 
   return !followed ? (
     <div className="flex flex-row items-center align-items justify-between">
@@ -26,9 +32,9 @@ const SuggestedProfile = ({
         <img
           className="rounded-full w-8 flex mr-3"
           src={`/images/avatars/${username}.jpg`}
-          alt={username}
-          onError={(error) => {
-            error.target.src = `/images/avatars/defualt.png`;
+          alt=""
+          onError={(e) => {
+            e.target.src = `/images/avatars/default.png`;
           }}
         />
         <Link to={`/p/${username}`}>
@@ -44,9 +50,7 @@ const SuggestedProfile = ({
       </button>
     </div>
   ) : null;
-};
-
-export default SuggestedProfile;
+}
 
 SuggestedProfile.propTypes = {
   profileDocId: PropTypes.string.isRequired,
