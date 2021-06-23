@@ -1,7 +1,7 @@
 import { useReducer, useEffect } from "react";
 import PropTypes from "prop-types";
-import Header from "./header";
-import Photos from "./photos";
+import Header from "./Header";
+import Photos from "./Photos";
 import { getUserPhotosByUserId } from "../../services/firebase";
 
 export default function Profile({ user }) {
